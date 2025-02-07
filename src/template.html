@@ -3,9 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo</title>
+    <title>TO-DO</title>
   </head>
   <body>
-    <div id="content"></div>
+    <div class="todo-container">
+      <h1 class="todo-header">TO-DO</h1>
+      <div class="todo-body">
+        <div class="todo-side-panel">
+          <div class="default-views">All</div>
+          <div class="default-views">Today</div>
+          <div class="default-views">Projects</div>
+          <div class="projects-view"></div>
+
+          <button class="new-todo-button">+</button>
+        </div>
+        <div id="todo-list"></div>
+      </div>
+    </div>
   </body>
 </html>
