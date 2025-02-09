@@ -1,7 +1,8 @@
 class ToDoList {
-  constructor() {
-    this.todos = [];
-    this.idCounter = 1;
+  constructor(storageService) {
+    this.storageService = storageService;
+    this.todos = this.storageService.load();
+    this.idCounter = this.todos.length ? Math.max(...(this.todos.map((t) => t.id) + 1)) : 1;
   }
 
   addTodo(title, description, notes, date, priority, isComplete) {
@@ -16,6 +17,7 @@ class ToDoList {
     };
 
     this.todos.push(todo);
+    this.storageService.save(this.todos);
     return todo;
   }
 
@@ -25,7 +27,10 @@ class ToDoList {
 
   completeTodo(id) {
     const todo = this.todos.find((t) => t.id === id);
-    if (todo) todo.isComplete = true;
+    if (todo) {
+      todo.isComplete = true;
+      this.storageService.save(this.todos);
+    }
 
     return todo || null;
   }
@@ -33,7 +38,10 @@ class ToDoList {
   removeTodo(id) {
     const index = this.todos.findIndex((t) => t.id === id);
     if (index !== -1) {
-      return this.todos.splice(index, 1)[0];
+      const removedTodo = this.todos.splice(index, 1)[0];
+      this.storageService.save(this.todos);
+
+      return removedTodo;
     }
 
     return null;
