@@ -1,4 +1,4 @@
-class ToDoList {
+export class ToDoList {
   constructor(storageService) {
     this.storageService = storageService;
     this.todos = this.storageService.load();
