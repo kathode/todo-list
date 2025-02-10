@@ -2,7 +2,7 @@ export class ToDoList {
   constructor(storageService) {
     this.storageService = storageService;
     this.todos = this.storageService.load();
-    this.idCounter = this.todos.length ? Math.max(...(this.todos.map((t) => t.id) + 1)) : 1;
+    this.idCounter = this.todos.length ? Math.max(...this.todos.map((t) => t.id)) + 1 : 1;
   }
 
   addTodo(title, description, notes, date, priority, isComplete) {
