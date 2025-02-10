@@ -1,4 +1,4 @@
-class StorageService {
+export class StorageService {
   constructor(key) {
     this.key = key;
   }
