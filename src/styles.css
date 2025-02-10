@@ -92,8 +92,45 @@ body {
   font-size: 2rem;
 }
 
+/* todo list */
+
+/* 
+  header - - - - - - - - header
+  sidebar | todo-list todo-list 
+  sidebar | todo-list todo-list
+  sidebar | todo-list todo-list
+*/
+
 #todo-list {
   background: rgb(255, 255, 255);
   width: 100%;
   padding: 3rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.todo-item {
+  background: #ebebeb;
+  display: flex;
+
+  padding: 0.5rem;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.todo-item:hover {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background: #e1e1e1;
+}
+
+.todo-wrapper {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.todo-complete {
+  text-decoration: line-through;
+  color: gray;
 }
