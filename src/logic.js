@@ -5,13 +5,13 @@ export class ToDoList {
     this.idCounter = this.todos.length ? Math.max(...this.todos.map((t) => t.id)) + 1 : 1;
   }
 
-  addTodo(title, description, notes, date, priority, isComplete) {
+  addTodo(title, description, notes, dueDate, priority, isComplete) {
     const todo = {
       id: this.idCounter++,
       title,
       description,
       notes,
-      date,
+      dueDate,
       priority,
       isComplete,
     };
