@@ -5,24 +5,23 @@ export class ToDoList {
     this.idCounter = this.todos.length ? Math.max(...this.todos.map((t) => t.id)) + 1 : 1;
   }
 
-  addTodo(title, description, notes, dueDate, priority, isComplete) {
+  getIdCounter() {
+    return this.idCounter;
+  }
+
+  getTodos() {
+    return this.todos;
+  }
+
+  addTodo(data) {
     const todo = {
       id: this.idCounter++,
-      title,
-      description,
-      notes,
-      dueDate,
-      priority,
-      isComplete,
+      ...data,
     };
 
     this.todos.push(todo);
     this.storageService.save(this.todos);
     return todo;
-  }
-
-  getTodos() {
-    return this.todos;
   }
 
   completeTodo(id) {
