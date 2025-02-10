@@ -24,10 +24,10 @@ export class ToDoList {
     return todo;
   }
 
-  completeTodo(id) {
+  completeTodo(id, isComplete) {
     const todo = this.todos.find((t) => t.id === id);
     if (todo) {
-      todo.isComplete = true;
+      todo.isComplete = isComplete;
       this.storageService.save(this.todos);
     }
 
