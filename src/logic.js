@@ -45,4 +45,15 @@ export class ToDoList {
 
     return null;
   }
+
+  editTodo(data) {
+    const index = this.todos.findIndex((t) => t.id === data.id);
+
+    if (index !== -1) {
+      const editedTodo = this.todos.splice(index, 1, data)[0];
+      this.storageService.save(this.todos);
+
+      return editedTodo;
+    }
+  }
 }
