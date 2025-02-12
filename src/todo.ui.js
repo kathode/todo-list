@@ -19,7 +19,8 @@ export const displayTodoItem = (data, TodoClass) => {
     }
   });
 
-  todo.addEventListener("click", () => {
+  todo.addEventListener("click", (event) => {
+    if (event.target.type === "checkbox") return;
     displayModal(data, TodoClass);
   });
 
