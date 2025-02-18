@@ -1,9 +1,10 @@
 import { createElement } from "./helper";
+import { format } from "date-fns";
 
 export const displayTodoItem = (data, TodoClass) => {
   const checkbox = createElement("input", { className: "todo-checkbox", type: "checkbox", checked: data.isComplete });
   const titleDisplay = createElement("div", { className: `todo-title  ${data.isComplete ? "todo-complete" : ""}`, innerText: data.title });
-  const dueDateDisplay = createElement("div", { className: "todo-due-date", innerText: data.dueDate });
+  const dueDateDisplay = createElement("div", { className: "todo-due-date", innerText: format(new Date(data.dueDate), "EEE, dd MMM yyy") });
   const column1 = createElement("div", { className: "todo-wrapper" }, checkbox, titleDisplay);
   const column2 = createElement("div", { className: "todo-wrapper" }, dueDateDisplay);
   const todo = createElement("div", { className: `todo-item ${data.priority}`, id: `todo-item-${data.id}` }, column1, column2);
@@ -125,7 +126,7 @@ const updateTodoItemInDOM = (updatedTodo) => {
 
   if (todoElement) {
     todoElement.querySelector(".todo-title").innerText = updatedTodo.title;
-    todoElement.querySelector(".todo-due-date").innerText = updatedTodo.dueDate;
+    todoElement.querySelector(".todo-due-date").innerText = format(new Date(updatedTodo.dueDate), "EEE, dd MMM yyy");
     todoElement.className = `todo-item ${updatedTodo.priority.toLowerCase()}`;
   }
 };
