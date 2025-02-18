@@ -13,6 +13,10 @@ export class ToDoList {
     return this.todos;
   }
 
+  getTodo(id) {
+    return this.todos.find((todo) => todo.id === id);
+  }
+
   addTodo(data) {
     const todo = {
       id: this.idCounter++,
