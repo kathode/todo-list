@@ -21,14 +21,15 @@ export const displayTodoItem = (data, TodoClass) => {
 
   todo.addEventListener("click", (event) => {
     if (event.target.type === "checkbox") return;
-    displayModal(data, TodoClass);
+    displayModal(data.id, TodoClass);
   });
 
   const todoList = document.querySelector("#todo-list");
   todoList.append(todo);
 };
 
-export const displayModal = (data, TodoClass) => {
+export const displayModal = (id, TodoClass) => {
+  const data = TodoClass.getTodo(id);
   const body = document.querySelector("body");
 
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
@@ -44,16 +45,26 @@ export const displayModal = (data, TodoClass) => {
   const dueDateFormGroup = createElement("form-group", {}, dueDateLabel, dueDateInput);
 
   const priorityLabel = createElement("label", { innerText: "Priority", for: "priority" });
-  const lowOption = createElement("option", { innerText: "Low", value: "low" });
-  const medOption = createElement("option", { innerText: "Medium", value: "medium" });
-  const highOption = createElement("option", { innerText: "High", value: "high" });
-  const priorityInput = createElement(
-    "select",
-    { id: "priority", name: "priority", value: data?.priority ?? "low" },
-    lowOption,
-    medOption,
-    highOption
-  );
+  const lowOption = createElement("option", {
+    id: "low-option",
+    innerText: "Low",
+    value: "low",
+    selected: `${data?.priority === "low" ? "selected" : ""}`,
+  });
+  const medOption = createElement("option", {
+    id: "medium-option",
+    innerText: "Medium",
+    value: "medium",
+    selected: `${data?.priority === "medium" ? "selected" : ""}`,
+  });
+  const highOption = createElement("option", {
+    id: "high-option",
+    innerText: "High",
+    value: "high",
+    selected: `${data?.priority === "high" ? "selected" : ""}`,
+  });
+
+  const priorityInput = createElement("select", { id: "priority", name: "priority" }, lowOption, medOption, highOption);
   const priorityFormGroup = createElement("form-group", {}, priorityLabel, priorityInput);
 
   const projectLabel = createElement("label", { innerText: "Project", for: "project" });
