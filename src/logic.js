@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export class ToDoList {
   constructor(storageService) {
     this.storageService = storageService;
@@ -15,6 +17,15 @@ export class ToDoList {
 
   getTodo(id) {
     return this.todos.find((todo) => todo.id === id);
+  }
+
+  getTodoType(type) {
+    switch (type) {
+      case "ALL":
+        return this.todos.length;
+      case "TODAY":
+        return this.todos.filter((todo) => format(new Date(todo.dueDate), "EEE, dd MMM yyy") === format(new Date(), "EEE, dd MMM yyy")).length;
+    }
   }
 
   addTodo(data) {
