@@ -30,6 +30,7 @@ body {
 
 .todo-body {
   display: flex;
+  overflow: auto;
   flex-grow: 1;
 }
 
@@ -56,6 +57,20 @@ body {
   font-weight: 100;
   font-size: 2rem;
   position: relative;
+}
+
+#all::after {
+  counter-reset: all-view var(--all-view);
+  content: counter(all-view);
+  position: absolute;
+  right: 0;
+}
+
+#today::after {
+  counter-reset: today-view var(--today-view);
+  content: counter(today-view);
+  position: absolute;
+  right: 0;
 }
 
 .default-views:hover:not(.project),
@@ -109,6 +124,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  overflow: auto;
 }
 
 .todo-item {
@@ -125,7 +141,7 @@ body {
   border-left: 3px solid green;
 }
 
-.todo-item.medium {
+.todo-item::after .todo-item.medium {
   border-left: 3px solid orange;
 }
 
