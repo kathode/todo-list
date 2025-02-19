@@ -19,12 +19,23 @@ const button = document.querySelector(".new-todo-button");
       title: "abc",
       description: "description",
       notes: "notes",
-      dueDate: "3 December",
-      priority: "high",
+      dueDate: new Date(),
+      priority: "medium",
       isComplete: false,
     };
 
     displayTodoItem(newTodo, todos);
     todos.addTodo(newTodo);
+  });
+
+  const all = document.querySelector("#all");
+  const today = document.querySelector("#today");
+
+  all.style.setProperty("--all-view", todos.getTodoType("ALL"));
+  today.style.setProperty("--today-view", todos.getTodoType("TODAY"));
+
+  button.addEventListener("click", () => {
+    all.style.setProperty("--all-view", todos.getTodoType("ALL"));
+    today.style.setProperty("--today-view", todos.getTodoType("TODAY"));
   });
 })();
