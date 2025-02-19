@@ -117,6 +117,11 @@ export const displayModal = (id, TodoClass) => {
 
     TodoClass.editTodo(newData);
     updateTodoItemInDOM(newData);
+    const all = document.querySelector("#all");
+    const today = document.querySelector("#today");
+
+    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
+    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
     modal.close();
   });
 };
