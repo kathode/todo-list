@@ -2,12 +2,15 @@ import { createElement } from "./helper";
 import { format } from "date-fns";
 
 export const displayTodoItem = (data, TodoClass) => {
-  const checkbox = createElement("input", { className: "todo-checkbox", type: "checkbox", checked: data.isComplete });
-  const titleDisplay = createElement("div", { className: `todo-title  ${data.isComplete ? "todo-complete" : ""}`, innerText: data.title });
-  const dueDateDisplay = createElement("div", { className: "todo-due-date", innerText: format(new Date(data.dueDate), "EEE, dd MMM yyy") });
+  const checkbox = createElement("input", { className: "todo-checkbox", type: "checkbox", checked: data?.isComplete });
+  const titleDisplay = createElement("div", { className: `todo-title  ${data?.isComplete ? "todo-complete" : ""}`, innerText: data?.title });
+  const dueDateDisplay = createElement("div", {
+    className: "todo-due-date",
+    innerText: data?.dueDate ? format(new Date(data?.dueDate), "EEE, dd MMM yyy") : "",
+  });
   const column1 = createElement("div", { className: "todo-wrapper" }, checkbox, titleDisplay);
   const column2 = createElement("div", { className: "todo-wrapper" }, dueDateDisplay);
-  const todo = createElement("div", { className: `todo-item ${data.priority}`, id: `todo-item-${data.id}` }, column1, column2);
+  const todo = createElement("div", { className: `todo-item ${data?.priority}`, id: `todo-item-${data?.id}` }, column1, column2);
 
   checkbox.addEventListener("click", (event) => {
     const isComplete = event.target.checked;
@@ -30,11 +33,24 @@ export const displayTodoItem = (data, TodoClass) => {
 };
 
 export const displayModal = (id, TodoClass) => {
-  const data = TodoClass.getTodo(id);
+  const all = document.querySelector("#all");
+  const today = document.querySelector("#today");
+
+  const defaultData = {
+    id: TodoClass.getIdCounter(),
+    title: "",
+    description: "",
+    notes: "notes",
+    dueDate: "",
+    priority: "low",
+    isComplete: false,
+  };
+
+  const data = id ? TodoClass.getTodo(id) : defaultData;
   const body = document.querySelector("body");
 
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
-  const titleInput = createElement("input", { type: "text", id: "title", name: "title", value: data?.title ?? "" });
+  const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true, value: data?.title ?? "" });
   const titleFormGroup = createElement("form-group", {}, titleLabel, titleInput);
 
   const descriptionLabel = createElement("label", { innerText: "Description", for: " description" });
@@ -42,7 +58,7 @@ export const displayModal = (id, TodoClass) => {
   const descriptionFormGroup = createElement("form-group", {}, descriptionLabel, descriptionInput);
 
   const dueDateLabel = createElement("label", { innerText: "Due Date", for: "dueDate" });
-  const dueDateInput = createElement("input", { type: "date", id: "dueDate", name: "dueDate", value: data?.dueDate ?? "" });
+  const dueDateInput = createElement("input", { type: "date", id: "dueDate", name: "dueDate", required: true, value: data?.dueDate ?? "" });
   const dueDateFormGroup = createElement("form-group", {}, dueDateLabel, dueDateInput);
 
   const priorityLabel = createElement("label", { innerText: "Priority", for: "priority" });
@@ -75,12 +91,15 @@ export const displayModal = (id, TodoClass) => {
 
   const removeButton = createElement("button", { innerText: "remove", type: "button" });
   const closeButton = createElement("button", { innerText: "close", type: "button" });
-  const saveButton = createElement("input", { value: "ss", type: "submit" });
+  const saveButton = createElement("input", { value: "save", type: "submit" });
 
   removeButton.addEventListener("click", () => {
     const todoItem = document.querySelector(`#todo-item-${data.id}`);
     todoItem.remove();
     TodoClass.removeTodo(data.id);
+
+    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
+    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
     modal.close();
   });
 
@@ -115,11 +134,16 @@ export const displayModal = (id, TodoClass) => {
       newData[key] = value;
     }
 
-    TodoClass.editTodo(newData);
-    updateTodoItemInDOM(newData);
-    const all = document.querySelector("#all");
-    const today = document.querySelector("#today");
+    const isNew = !TodoClass.getTodo(newData.id);
 
+    if (isNew) {
+      TodoClass.addTodo(newData);
+      displayTodoItem(newData, TodoClass);
+    } else {
+      TodoClass.editTodo(newData);
+    }
+
+    updateTodoItemInDOM(newData);
     all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
     today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
     modal.close();
