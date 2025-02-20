@@ -48,7 +48,53 @@ export const displayModal = (id, TodoClass) => {
 
   const data = id ? TodoClass.getTodo(id) : defaultData;
   const body = document.querySelector("body");
+  const { form, closeButton, removeButton } = todoForm(data);
 
+  const modal = createElement("dialog", { className: "modal" }, form);
+
+  body.append(modal);
+  modal.showModal();
+
+  closeButton.addEventListener("click", () => {
+    modal.close();
+  });
+
+  removeButton.addEventListener("click", () => {
+    const todoItem = document.querySelector(`#todo-item-${data.id}`);
+    todoItem.remove();
+    TodoClass.removeTodo(data.id);
+
+    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
+    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
+    modal.close();
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    const newData = { ...data };
+    for (const [key, value] of formData.entries()) {
+      newData[key] = value;
+    }
+
+    const isNew = !TodoClass.getTodo(newData.id);
+
+    if (isNew) {
+      TodoClass.addTodo(newData);
+      displayTodoItem(newData, TodoClass);
+    } else {
+      TodoClass.editTodo(newData);
+    }
+
+    updateTodoItemInDOM(newData);
+    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
+    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
+    modal.close();
+  });
+};
+
+const todoForm = (data) => {
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true, value: data?.title ?? "" });
   const titleFormGroup = createElement("form-group", {}, titleLabel, titleInput);
@@ -93,16 +139,6 @@ export const displayModal = (id, TodoClass) => {
   const closeButton = createElement("button", { innerText: "close", type: "button" });
   const saveButton = createElement("input", { value: "save", type: "submit" });
 
-  removeButton.addEventListener("click", () => {
-    const todoItem = document.querySelector(`#todo-item-${data.id}`);
-    todoItem.remove();
-    TodoClass.removeTodo(data.id);
-
-    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
-    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
-    modal.close();
-  });
-
   const form = createElement(
     "form",
     { className: "form", id: data.id },
@@ -116,38 +152,7 @@ export const displayModal = (id, TodoClass) => {
     saveButton
   );
 
-  const modal = createElement("dialog", { className: "modal" }, form);
-
-  body.append(modal);
-  modal.showModal();
-
-  closeButton.addEventListener("click", () => {
-    modal.close();
-  });
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-
-    const newData = { ...data };
-    for (const [key, value] of formData.entries()) {
-      newData[key] = value;
-    }
-
-    const isNew = !TodoClass.getTodo(newData.id);
-
-    if (isNew) {
-      TodoClass.addTodo(newData);
-      displayTodoItem(newData, TodoClass);
-    } else {
-      TodoClass.editTodo(newData);
-    }
-
-    updateTodoItemInDOM(newData);
-    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
-    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
-    modal.close();
-  });
+  return { form, closeButton, removeButton };
 };
 
 const updateTodoItemInDOM = (updatedTodo) => {
