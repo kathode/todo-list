@@ -22,9 +22,9 @@ export class ToDoList {
   getTodoType(type) {
     switch (type) {
       case "ALL":
-        return this.todos.length;
+        return this.todos;
       case "TODAY":
-        return this.todos.filter((todo) => format(new Date(todo.dueDate), "EEE, dd MMM yyy") === format(new Date(), "EEE, dd MMM yyy")).length;
+        return this.todos.filter((todo) => format(new Date(todo.dueDate), "EEE, dd MMM yyy") === format(new Date(), "EEE, dd MMM yyy"));
     }
   }
 
