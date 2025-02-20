@@ -64,8 +64,8 @@ export const displayModal = (id, TodoClass) => {
     todoItem.remove();
     TodoClass.removeTodo(data.id);
 
-    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
-    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
+    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL").length);
+    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY").length);
     modal.close();
   });
 
@@ -88,8 +88,8 @@ export const displayModal = (id, TodoClass) => {
     }
 
     updateTodoItemInDOM(newData);
-    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL"));
-    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY"));
+    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL").length);
+    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY").length);
     modal.close();
   });
 };
