@@ -30,14 +30,14 @@ const todoList = document.querySelector("#todo-list");
 
   all.addEventListener("click", () => {
     todoList.innerHTML = "";
-    for (const todo of todos.getTodoType("ALL").data) {
+    for (const todo of todos.getTodoType("ALL")) {
       displayTodoItem(todo, todos);
     }
   });
 
   today.addEventListener("click", () => {
     todoList.innerHTML = "";
-    for (const todo of todos.getTodoType("TODAY").data) {
+    for (const todo of todos.getTodoType("TODAY")) {
       displayTodoItem(todo, todos);
     }
   });
