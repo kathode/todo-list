@@ -141,7 +141,7 @@ body {
   border-left: 3px solid green;
 }
 
-.todo-item::after .todo-item.medium {
+.todo-item.medium {
   border-left: 3px solid orange;
 }
 
