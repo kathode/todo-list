@@ -1,9 +1,9 @@
 import { ToDoList } from "./logic";
 import { LocalStorageService } from "./localStorage.service";
 import "./styles.css";
-import { displayTodoItem } from "./todo.ui";
+import { displayModal, displayTodoItem } from "./todo.ui";
 
-const button = document.querySelector(".new-todo-button");
+const newTodo = document.querySelector(".new-todo-button");
 
 (function () {
   const todos = new ToDoList(new LocalStorageService());
@@ -12,20 +12,8 @@ const button = document.querySelector(".new-todo-button");
     displayTodoItem(todo, todos);
   }
 
-  // create hardcoded todo tasks for now
-  button.addEventListener("click", () => {
-    const newTodo = {
-      id: todos.getIdCounter(),
-      title: "abc",
-      description: "description",
-      notes: "notes",
-      dueDate: new Date(),
-      priority: "medium",
-      isComplete: false,
-    };
-
-    displayTodoItem(newTodo, todos);
-    todos.addTodo(newTodo);
+  newTodo.addEventListener("click", () => {
+    displayModal(null, todos);
   });
 
   const all = document.querySelector("#all");
@@ -34,7 +22,7 @@ const button = document.querySelector(".new-todo-button");
   all.style.setProperty("--all-view", todos.getTodoType("ALL"));
   today.style.setProperty("--today-view", todos.getTodoType("TODAY"));
 
-  button.addEventListener("click", () => {
+  newTodo.addEventListener("click", () => {
     all.style.setProperty("--all-view", todos.getTodoType("ALL"));
     today.style.setProperty("--today-view", todos.getTodoType("TODAY"));
   });
