@@ -4,7 +4,7 @@ import "./styles.css";
 import { displayModal, displayTodoItem } from "./todo.ui";
 
 const newTodo = document.querySelector(".new-todo-button");
-const todoList = document.querySelector("#todo-list");
+const todoList = document.querySelector(".todo-list");
 
 (function () {
   const todos = new ToDoList(new LocalStorageService());
