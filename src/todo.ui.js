@@ -28,11 +28,12 @@ export const displayTodoItem = (data, TodoClass) => {
     displayModal(data.id, TodoClass);
   });
 
-  const todoList = document.querySelector("#todo-list");
+  const todoList = document.querySelector(".todo-list");
   todoList.append(todo);
 };
 
 export const displayModal = (id, TodoClass) => {
+  const isNew = id === null;
   const all = document.querySelector("#all");
   const today = document.querySelector("#today");
 
@@ -48,7 +49,7 @@ export const displayModal = (id, TodoClass) => {
 
   const data = id ? TodoClass.getTodo(id) : defaultData;
   const body = document.querySelector("body");
-  const { form, closeButton, removeButton } = todoForm(data);
+  const { form, closeButton, removeButton } = todoForm(data, isNew);
 
   const modal = createElement("dialog", { className: "modal" }, form);
 
@@ -78,8 +79,6 @@ export const displayModal = (id, TodoClass) => {
       newData[key] = value;
     }
 
-    const isNew = !TodoClass.getTodo(newData.id);
-
     if (isNew) {
       TodoClass.addTodo(newData);
       displayTodoItem(newData, TodoClass);
@@ -94,7 +93,7 @@ export const displayModal = (id, TodoClass) => {
   });
 };
 
-const todoForm = (data) => {
+const todoForm = (data, isNew) => {
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true, value: data?.title ?? "" });
   const titleFormGroup = createElement("form-group", {}, titleLabel, titleInput);
@@ -135,13 +134,11 @@ const todoForm = (data) => {
   const projectInput = createElement("select", { id: "project", name: "project", value: data?.project ?? "default" }, defaultOption);
   const projectFormGroup = createElement("form-group", {}, projectLabel, projectInput);
 
-  const removeButton = createElement("button", { innerText: "remove", type: "button" });
+  const removeButton = createElement("button", { innerText: "delete", type: "button" });
   const closeButton = createElement("button", { innerText: "close", type: "button" });
   const saveButton = createElement("input", { value: "save", type: "submit" });
 
-  const form = createElement(
-    "form",
-    { className: "form", id: data.id },
+  let formChildren = [
     titleFormGroup,
     descriptionFormGroup,
     dueDateFormGroup,
@@ -149,8 +146,13 @@ const todoForm = (data) => {
     projectFormGroup,
     removeButton,
     closeButton,
-    saveButton
-  );
+    saveButton,
+  ];
+
+  if (isNew) {
+    formChildren = formChildren.filter((child) => child.innerText !== "delete");
+  }
+  const form = createElement("form", { className: "form", id: data.id }, ...formChildren);
 
   return { form, closeButton, removeButton };
 };
