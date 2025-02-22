@@ -85,7 +85,8 @@ body {
   font-size: 1.75rem;
 }
 
-.new-todo-button {
+.new-todo-button,
+.new-project-button {
   margin-top: 1rem;
   font-size: 1rem;
   display: flex;
@@ -96,7 +97,8 @@ body {
   padding: 0 1rem;
 }
 
-.new-todo-button::before {
+.new-todo-button::before,
+.new-project-button::before {
   content: "+";
   font-size: 2rem;
 }
