@@ -18,3 +18,12 @@ export const selectOptions = (options, currentSelection) => {
 
   return optionUI;
 };
+
+export const displayModal = (children) => {
+  const body = document.querySelector("body");
+  const modal = createElement("dialog", { className: "modal" }, children);
+  body.append(modal);
+  modal.showModal();
+
+  return modal;
+};
