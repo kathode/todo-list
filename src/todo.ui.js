@@ -49,7 +49,7 @@ export const displayModal = (id, TodoClass) => {
 
   const data = id ? TodoClass.getTodo(id) : defaultData;
   const body = document.querySelector("body");
-  const { form, closeButton, removeButton } = todoForm(data, isNew);
+  const { form, closeButton, removeButton } = taskForm(data, isNew);
 
   const modal = createElement("dialog", { className: "modal" }, form);
 
@@ -93,7 +93,7 @@ export const displayModal = (id, TodoClass) => {
   });
 };
 
-const todoForm = (data, isNew) => {
+const taskForm = (data, isNew) => {
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true, value: data?.title ?? "" });
   const titleFormGroup = createElement("form-group", {}, titleLabel, titleInput);
