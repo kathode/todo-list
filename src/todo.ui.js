@@ -136,22 +136,13 @@ const todoForm = (data, isNew) => {
 
   const removeButton = createElement("button", { innerText: "delete", type: "button" });
   const closeButton = createElement("button", { innerText: "close", type: "button" });
-  const saveButton = createElement("input", { value: "save", type: "submit" });
+  const saveButton = createElement("button", { innerText: "save", type: "submit" });
 
-  let formChildren = [
-    titleFormGroup,
-    descriptionFormGroup,
-    dueDateFormGroup,
-    priorityFormGroup,
-    projectFormGroup,
-    removeButton,
-    closeButton,
-    saveButton,
-  ];
+  let formButtonChildren = [removeButton, closeButton, saveButton];
+  if (isNew) formButtonChildren = formButtonChildren.filter((child) => child.innerText !== "delete");
 
-  if (isNew) {
-    formChildren = formChildren.filter((child) => child.innerText !== "delete");
-  }
+  const formButtons = createElement("div", {}, ...formButtonChildren);
+  const formChildren = [titleFormGroup, descriptionFormGroup, dueDateFormGroup, priorityFormGroup, projectFormGroup, formButtons];
   const form = createElement("form", { className: "form", id: data.id }, ...formChildren);
 
   return { form, closeButton, removeButton };
