@@ -1,4 +1,4 @@
-import { createElement, selectOptions } from "./helper";
+import { createElement, displayModal, selectOptions } from "./helper";
 import { format } from "date-fns";
 
 export const displayTodoItem = (todoItemData, TodoClass) => {
@@ -28,14 +28,14 @@ export const displayTodoItem = (todoItemData, TodoClass) => {
 
   todo.addEventListener("click", (event) => {
     if (event.target.type === "checkbox") return;
-    displayModal(todoItemData.id, TodoClass);
+    displayTaskModal(todoItemData.id, TodoClass);
   });
 
   const todoList = document.querySelector(".todo-list");
   todoList.append(todo);
 };
 
-export const displayModal = (id, TodoClass) => {
+export const displayTaskModal = (id, TodoClass) => {
   const isNew = id === null;
   const all = document.querySelector("#all");
   const today = document.querySelector("#today");
@@ -51,13 +51,8 @@ export const displayModal = (id, TodoClass) => {
   };
 
   const todoItemData = id ? TodoClass.getTodo(id) : defaultData;
-  const body = document.querySelector("body");
   const { form, closeButton, removeButton } = taskForm(todoItemData, isNew);
-
-  const modal = createElement("dialog", { className: "modal" }, form);
-
-  body.append(modal);
-  modal.showModal();
+  const modal = displayModal(form);
 
   closeButton.addEventListener("click", () => {
     modal.close();

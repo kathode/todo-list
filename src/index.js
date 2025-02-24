@@ -1,7 +1,7 @@
 import { ToDoList } from "./logic";
 import { LocalStorageService } from "./localStorage.service";
 import "./styles.css";
-import { displayModal, displayTodoItem } from "./todo.ui";
+import { displayTaskModal, displayTodoItem } from "./todo.ui";
 
 const newTodo = document.querySelector(".new-todo-button");
 const todoList = document.querySelector(".todo-list");
@@ -14,7 +14,7 @@ const todoList = document.querySelector(".todo-list");
   }
 
   newTodo.addEventListener("click", () => {
-    displayModal(null, todos);
+    displayTaskModal(null, todos);
   });
 
   const all = document.querySelector("#all");
