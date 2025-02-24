@@ -1,20 +1,23 @@
 import { createElement, selectOptions } from "./helper";
 import { format } from "date-fns";
 
-export const displayTodoItem = (data, TodoClass) => {
-  const checkbox = createElement("input", { className: "todo-checkbox", type: "checkbox", checked: data?.isComplete });
-  const titleDisplay = createElement("div", { className: `todo-title  ${data?.isComplete ? "todo-complete" : ""}`, innerText: data?.title });
+export const displayTodoItem = (todoItemData, TodoClass) => {
+  const checkbox = createElement("input", { className: "todo-checkbox", type: "checkbox", checked: todoItemData?.isComplete });
+  const titleDisplay = createElement("div", {
+    className: `todo-title  ${todoItemData?.isComplete ? "todo-complete" : ""}`,
+    innerText: todoItemData?.title,
+  });
   const dueDateDisplay = createElement("div", {
     className: "todo-due-date",
-    innerText: data?.dueDate ? format(new Date(data?.dueDate), "EEE, dd MMM yyy") : "",
+    innerText: todoItemData?.dueDate ? format(new Date(todoItemData?.dueDate), "EEE, dd MMM yyy") : "",
   });
   const column1 = createElement("div", { className: "todo-wrapper" }, checkbox, titleDisplay);
   const column2 = createElement("div", { className: "todo-wrapper" }, dueDateDisplay);
-  const todo = createElement("div", { className: `todo-item ${data?.priority}`, id: `todo-item-${data?.id}` }, column1, column2);
+  const todo = createElement("div", { className: `todo-item ${todoItemData?.priority}`, id: `todo-item-${todoItemData?.id}` }, column1, column2);
 
   checkbox.addEventListener("click", (event) => {
     const isComplete = event.target.checked;
-    TodoClass.completeTodo(data.id, isComplete);
+    TodoClass.completeTodo(todoItemData.id, isComplete);
 
     if (isComplete) {
       titleDisplay.classList.add("todo-complete");
@@ -25,7 +28,7 @@ export const displayTodoItem = (data, TodoClass) => {
 
   todo.addEventListener("click", (event) => {
     if (event.target.type === "checkbox") return;
-    displayModal(data.id, TodoClass);
+    displayModal(todoItemData.id, TodoClass);
   });
 
   const todoList = document.querySelector(".todo-list");
@@ -47,9 +50,9 @@ export const displayModal = (id, TodoClass) => {
     isComplete: false,
   };
 
-  const data = id ? TodoClass.getTodo(id) : defaultData;
+  const todoItemData = id ? TodoClass.getTodo(id) : defaultData;
   const body = document.querySelector("body");
-  const { form, closeButton, removeButton } = taskForm(data, isNew);
+  const { form, closeButton, removeButton } = taskForm(todoItemData, isNew);
 
   const modal = createElement("dialog", { className: "modal" }, form);
 
@@ -61,9 +64,9 @@ export const displayModal = (id, TodoClass) => {
   });
 
   removeButton.addEventListener("click", () => {
-    const todoItem = document.querySelector(`#todo-item-${data.id}`);
+    const todoItem = document.querySelector(`#todo-item-${todoItemData.id}`);
     todoItem.remove();
-    TodoClass.removeTodo(data.id);
+    TodoClass.removeTodo(todoItemData.id);
 
     all.style.setProperty("--all-view", TodoClass.getTodoType("ALL").length);
     today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY").length);
@@ -74,7 +77,7 @@ export const displayModal = (id, TodoClass) => {
     event.preventDefault();
     const formData = new FormData(event.target);
 
-    const newData = { ...data };
+    const newData = { ...todoItemData };
     for (const [key, value] of formData.entries()) {
       newData[key] = value;
     }
