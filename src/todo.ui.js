@@ -91,6 +91,25 @@ export const displayTaskModal = (id, TodoClass) => {
   });
 };
 
+export const displayProjectModal = (TodoClass) => {};
+
+const projectForm = (data, isNew) => {
+  const titleLabel = createElement("label", { innerText: "Title", for: "title" });
+  const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true });
+  const titleFormGroup = createElement("form-group", {}, titleLabel, titleInput);
+
+  const removeButton = createElement("button", { innerText: "delete", type: "button" });
+  const closeButton = createElement("button", { innerText: "close", type: "button" });
+  const saveButton = createElement("button", { innerText: "save", type: "submit" });
+
+  let formButtonChildren = [removeButton, closeButton, saveButton];
+  if (isNew) formButtonChildren = formButtonChildren.filter((child) => child.innerText !== "delete");
+
+  const form = createElement("form", { className: "form", id: data.id }, titleFormGroup, formButtonChildren);
+
+  return { form, closeButton, removeButton };
+};
+
 const taskForm = (data, isNew) => {
   const priorityOptions = [
     { innerText: "Low", value: "low" },
