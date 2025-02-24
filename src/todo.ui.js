@@ -1,4 +1,4 @@
-import { createElement } from "./helper";
+import { createElement, selectOptions } from "./helper";
 import { format } from "date-fns";
 
 export const displayTodoItem = (data, TodoClass) => {
@@ -94,6 +94,12 @@ export const displayModal = (id, TodoClass) => {
 };
 
 const taskForm = (data, isNew) => {
+  const priorityOptions = [
+    { innerText: "Low", value: "low" },
+    { innerText: "Medium", value: "medium" },
+    { innerText: "High", value: "high" },
+  ];
+
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true, value: data?.title ?? "" });
   const titleFormGroup = createElement("form-group", {}, titleLabel, titleInput);
@@ -107,26 +113,7 @@ const taskForm = (data, isNew) => {
   const dueDateFormGroup = createElement("form-group", {}, dueDateLabel, dueDateInput);
 
   const priorityLabel = createElement("label", { innerText: "Priority", for: "priority" });
-  const lowOption = createElement("option", {
-    id: "low-option",
-    innerText: "Low",
-    value: "low",
-    selected: `${data?.priority === "low" ? "selected" : ""}`,
-  });
-  const medOption = createElement("option", {
-    id: "medium-option",
-    innerText: "Medium",
-    value: "medium",
-    selected: `${data?.priority === "medium" ? "selected" : ""}`,
-  });
-  const highOption = createElement("option", {
-    id: "high-option",
-    innerText: "High",
-    value: "high",
-    selected: `${data?.priority === "high" ? "selected" : ""}`,
-  });
-
-  const priorityInput = createElement("select", { id: "priority", name: "priority" }, lowOption, medOption, highOption);
+  const priorityInput = createElement("select", { id: "priority", name: "priority" }, ...selectOptions(priorityOptions, data.priority));
   const priorityFormGroup = createElement("form-group", {}, priorityLabel, priorityInput);
 
   const projectLabel = createElement("label", { innerText: "Project", for: "project" });
