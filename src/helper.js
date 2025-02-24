@@ -8,3 +8,13 @@ export const createElement = (tag, attributes = {}, ...children) => {
   }
   return element;
 };
+
+export const selectOptions = (options, currentSelection) => {
+  const optionUI = [];
+
+  for (const option of options) {
+    optionUI.push(createElement("option", { ...option, selected: currentSelection === option.value }));
+  }
+
+  return optionUI;
+};
