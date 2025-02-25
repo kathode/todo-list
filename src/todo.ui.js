@@ -1,5 +1,6 @@
 import { createElement, displayModal, selectOptions } from "./helper";
 import { format } from "date-fns";
+import { LocalStorageService } from "./localStorage.service";
 
 export const displayTodoItem = (todoItemData, todoClass) => {
   const checkbox = createElement("input", { className: "todo-checkbox", type: "checkbox", checked: todoItemData?.isComplete });
@@ -92,12 +93,16 @@ export const displayTaskModal = (id, todoClass) => {
   });
 };
 
+// prettier-ignore
 const taskForm = (data, isNew) => {
   const priorityOptions = [
     { innerText: "Low", value: "low" },
     { innerText: "Medium", value: "medium" },
     { innerText: "High", value: "high" },
   ];
+
+  const projectList = new LocalStorageService("project");
+  const projectListParsed = projectList.load().map((p) => ({ value: p.title, innerText: p.title }));
 
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true, value: data?.title ?? "" });
@@ -116,8 +121,7 @@ const taskForm = (data, isNew) => {
   const priorityFormGroup = createElement("form-group", {}, priorityLabel, priorityInput);
 
   const projectLabel = createElement("label", { innerText: "Project", for: "project" });
-  const defaultOption = createElement("option", { innerText: "Default", value: "default" });
-  const projectInput = createElement("select", { id: "project", name: "project", value: data?.project ?? "default" }, defaultOption);
+  const projectInput = createElement("select",{ id: "project", name: "project", value: data?.project ?? "default" },...selectOptions(projectListParsed, data.project));
   const projectFormGroup = createElement("form-group", {}, projectLabel, projectInput);
 
   const removeButton = createElement("button", { innerText: "delete", type: "button" });
