@@ -62,7 +62,7 @@ export const displayTaskModal = (id, todoClass) => {
   removeButton.addEventListener("click", () => {
     const todoItem = document.querySelector(`#todo-item-${todoItemData.id}`);
     todoItem.remove();
-    todoClass.removeTodo(todoItemData.id);
+    todoClass.removeItem(todoItemData.id);
 
     all.style.setProperty("--all-view", todoClass.getTodoType("ALL").length);
     today.style.setProperty("--today-view", todoClass.getTodoType("TODAY").length);
