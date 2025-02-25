@@ -17,7 +17,7 @@ export const displayTodoItem = (todoItemData, TodoClass) => {
 
   checkbox.addEventListener("click", (event) => {
     const isComplete = event.target.checked;
-    TodoClass.completeTodo(todoItemData.id, isComplete);
+    TodoClass.editItem({ ...todoItemData, isComplete });
 
     if (isComplete) {
       titleDisplay.classList.add("todo-complete");
@@ -47,10 +47,11 @@ export const displayTaskModal = (id, TodoClass) => {
     notes: "notes",
     dueDate: "",
     priority: "low",
+    project: 1,
     isComplete: false,
   };
 
-  const todoItemData = id ? TodoClass.getTodo(id) : defaultData;
+  const todoItemData = id ? TodoClass.getItem(id) : defaultData;
   const { form, closeButton, removeButton } = taskForm(todoItemData, isNew);
   const modal = displayModal(form);
 
@@ -78,10 +79,10 @@ export const displayTaskModal = (id, TodoClass) => {
     }
 
     if (isNew) {
-      TodoClass.addTodo(newData);
+      TodoClass.addItem(newData);
       displayTodoItem(newData, TodoClass);
     } else {
-      TodoClass.editTodo(newData);
+      TodoClass.editItem(newData);
     }
 
     updateTodoItemInDOM(newData);
@@ -90,8 +91,6 @@ export const displayTaskModal = (id, TodoClass) => {
     modal.close();
   });
 };
-
-export const displayProjectModal = (TodoClass) => {};
 
 const projectForm = (data, isNew) => {
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
@@ -105,7 +104,7 @@ const projectForm = (data, isNew) => {
   let formButtonChildren = [removeButton, closeButton, saveButton];
   if (isNew) formButtonChildren = formButtonChildren.filter((child) => child.innerText !== "delete");
 
-  const form = createElement("form", { className: "form", id: data.id }, titleFormGroup, formButtonChildren);
+  const form = createElement("form", { className: "form", id: data.id }, titleFormGroup, ...formButtonChildren);
 
   return { form, closeButton, removeButton };
 };
