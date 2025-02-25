@@ -1,7 +1,7 @@
 import { createElement, displayModal, selectOptions } from "./helper";
 import { format } from "date-fns";
 
-export const displayTodoItem = (todoItemData, TodoClass) => {
+export const displayTodoItem = (todoItemData, todoClass) => {
   const checkbox = createElement("input", { className: "todo-checkbox", type: "checkbox", checked: todoItemData?.isComplete });
   const titleDisplay = createElement("div", {
     className: `todo-title  ${todoItemData?.isComplete ? "todo-complete" : ""}`,
@@ -17,7 +17,7 @@ export const displayTodoItem = (todoItemData, TodoClass) => {
 
   checkbox.addEventListener("click", (event) => {
     const isComplete = event.target.checked;
-    TodoClass.editItem({ ...todoItemData, isComplete });
+    todoClass.editItem({ ...todoItemData, isComplete });
 
     if (isComplete) {
       titleDisplay.classList.add("todo-complete");
@@ -28,20 +28,20 @@ export const displayTodoItem = (todoItemData, TodoClass) => {
 
   todo.addEventListener("click", (event) => {
     if (event.target.type === "checkbox") return;
-    displayTaskModal(todoItemData.id, TodoClass);
+    displayTaskModal(todoItemData.id, todoClass);
   });
 
   const todoList = document.querySelector(".todo-list");
   todoList.append(todo);
 };
 
-export const displayTaskModal = (id, TodoClass) => {
+export const displayTaskModal = (id, todoClass) => {
   const isNew = id === null;
   const all = document.querySelector("#all");
   const today = document.querySelector("#today");
 
   const defaultData = {
-    id: TodoClass.getIdCounter(),
+    id: todoClass.getIdCounter(),
     title: "",
     description: "",
     notes: "notes",
@@ -51,7 +51,7 @@ export const displayTaskModal = (id, TodoClass) => {
     isComplete: false,
   };
 
-  const todoItemData = id ? TodoClass.getItem(id) : defaultData;
+  const todoItemData = id ? todoClass.getItem(id) : defaultData;
   const { form, closeButton, removeButton } = taskForm(todoItemData, isNew);
   const modal = displayModal(form);
 
@@ -62,10 +62,10 @@ export const displayTaskModal = (id, TodoClass) => {
   removeButton.addEventListener("click", () => {
     const todoItem = document.querySelector(`#todo-item-${todoItemData.id}`);
     todoItem.remove();
-    TodoClass.removeTodo(todoItemData.id);
+    todoClass.removeTodo(todoItemData.id);
 
-    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL").length);
-    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY").length);
+    all.style.setProperty("--all-view", todoClass.getTodoType("ALL").length);
+    today.style.setProperty("--today-view", todoClass.getTodoType("TODAY").length);
     modal.close();
   });
 
@@ -79,15 +79,15 @@ export const displayTaskModal = (id, TodoClass) => {
     }
 
     if (isNew) {
-      TodoClass.addItem(newData);
-      displayTodoItem(newData, TodoClass);
+      todoClass.addItem(newData);
+      displayTodoItem(newData, todoClass);
     } else {
-      TodoClass.editItem(newData);
+      todoClass.editItem(newData);
     }
 
     updateTodoItemInDOM(newData);
-    all.style.setProperty("--all-view", TodoClass.getTodoType("ALL").length);
-    today.style.setProperty("--today-view", TodoClass.getTodoType("TODAY").length);
+    all.style.setProperty("--all-view", todoClass.getTodoType("ALL").length);
+    today.style.setProperty("--today-view", todoClass.getTodoType("TODAY").length);
     modal.close();
   });
 };
