@@ -2,6 +2,14 @@ import { createElement, displayModal, selectOptions } from "./helper";
 import { format } from "date-fns";
 import { LocalStorageService } from "./localStorage.service";
 
+const priorityOptions = [
+  { id: 1, innerText: "Low", value: "low" },
+  { id: 2, innerText: "Medium", value: "medium" },
+  { id: 3, innerText: "High", value: "high" },
+];
+
+const getPriority = (todo) => priorityOptions.find((p) => p.id === todo.priority).value;
+
 export const displayTodoItem = (todoItemData, todoClass) => {
   const checkbox = createElement("input", { className: "todo-checkbox", type: "checkbox", checked: todoItemData?.isComplete });
   const titleDisplay = createElement("div", {
@@ -12,9 +20,10 @@ export const displayTodoItem = (todoItemData, todoClass) => {
     className: "todo-due-date",
     innerText: todoItemData?.dueDate ? format(new Date(todoItemData?.dueDate), "EEE, dd MMM yyy") : "",
   });
+
   const column1 = createElement("div", { className: "todo-wrapper" }, checkbox, titleDisplay);
   const column2 = createElement("div", { className: "todo-wrapper" }, dueDateDisplay);
-  const todo = createElement("div", { className: `todo-item ${todoItemData?.priority}`, id: `todo-item-${todoItemData?.id}` }, column1, column2);
+  const todo = createElement("div", { className: `todo-item ${getPriority(todoItemData)}`, id: `todo-item-${todoItemData?.id}` }, column1, column2);
 
   checkbox.addEventListener("click", (event) => {
     const isComplete = event.target.checked;
@@ -76,7 +85,10 @@ export const displayTaskModal = (id, todoClass) => {
 
     const newData = { ...todoItemData };
     for (const [key, value] of formData.entries()) {
-      newData[key] = value;
+      if (key === "project" || key === "priority") {
+        const selectedId = event.target.querySelector(`#${key} [value=${value}]`).id;
+        newData[key] = Number(selectedId);
+      } else newData[key] = value;
     }
 
     if (isNew) {
@@ -95,14 +107,9 @@ export const displayTaskModal = (id, todoClass) => {
 
 // prettier-ignore
 const taskForm = (data, isNew) => {
-  const priorityOptions = [
-    { innerText: "Low", value: "low" },
-    { innerText: "Medium", value: "medium" },
-    { innerText: "High", value: "high" },
-  ];
-
   const projectList = new LocalStorageService("project");
-  const projectListParsed = projectList.load().map((p) => ({ value: p.title, innerText: p.title }));
+  const projectListParsed = projectList.load().map((p) => ({id:p.id, value: p.title, innerText: p.title }));
+  const getProjectName = projectListParsed.find(p => p.id === data.project).value
 
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true, value: data?.title ?? "" });
@@ -121,7 +128,7 @@ const taskForm = (data, isNew) => {
   const priorityFormGroup = createElement("form-group", {}, priorityLabel, priorityInput);
 
   const projectLabel = createElement("label", { innerText: "Project", for: "project" });
-  const projectInput = createElement("select",{ id: "project", name: "project", value: data?.project ?? "default" },...selectOptions(projectListParsed, data.project));
+  const projectInput = createElement("select",{ id: "project", name: "project", value: getProjectName }, ...selectOptions(projectListParsed, data.project));
   const projectFormGroup = createElement("form-group", {}, projectLabel, projectInput);
 
   const removeButton = createElement("button", { innerText: "delete", type: "button" });
@@ -144,6 +151,6 @@ const updateTodoItemInDOM = (updatedTodo) => {
   if (todoElement) {
     todoElement.querySelector(".todo-title").innerText = updatedTodo.title;
     todoElement.querySelector(".todo-due-date").innerText = format(new Date(updatedTodo.dueDate), "EEE, dd MMM yyy");
-    todoElement.className = `todo-item ${updatedTodo.priority.toLowerCase()}`;
+    todoElement.className = `todo-item ${getPriority(updatedTodo)}`;
   }
 };
