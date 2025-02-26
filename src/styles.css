@@ -44,7 +44,7 @@ body {
 
 .todo-side-panel {
   background: rgb(227, 220, 220);
-  padding: 3rem;
+  padding: 3rem 2.6rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -57,32 +57,49 @@ body {
   font-weight: 100;
   font-size: 2rem;
   position: relative;
+  padding: 0 0.5rem;
 }
 
 #all::after {
   counter-reset: all-view var(--all-view);
   content: counter(all-view);
   position: absolute;
-  right: 0;
+  right: 0.5rem;
 }
 
 #today::after {
   counter-reset: today-view var(--today-view);
   content: counter(today-view);
   position: absolute;
-  right: 0;
+  right: 0.5rem;
+}
+
+.default-views:hover:not(.default-views.project),
+.projects-view > div {
+  padding: 0 0.5rem;
 }
 
 .default-views:hover:not(.default-views.project),
 .projects-view > :hover {
-  -webkit-text-stroke-width: 1.5px;
   cursor: pointer;
+  background: rgb(238, 237, 237);
+  border-radius: 0.25rem;
 }
 
 .projects-view {
-  padding-left: 1rem;
   font-weight: 100;
   font-size: 1.75rem;
+  padding-left: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.project-name {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .new-todo-button,
