@@ -1,4 +1,4 @@
-import { ToDoList } from "./logic";
+import { Todo } from "./todo.logic";
 import { LocalStorageService } from "./localStorage.service";
 import "./styles.css";
 import { displayTaskModal, displayTodoItem } from "./todo.ui";
@@ -7,38 +7,38 @@ const newTodo = document.querySelector(".new-todo-button");
 const todoList = document.querySelector(".todo-list");
 
 (function () {
-  const todos = new ToDoList(new LocalStorageService());
+  const todoClass = new Todo(new LocalStorageService("todo"));
 
-  for (const todo of todos.getTodos()) {
-    displayTodoItem(todo, todos);
+  for (const todo of todoClass.getArray()) {
+    displayTodoItem(todo, todoClass);
   }
 
   newTodo.addEventListener("click", () => {
-    displayTaskModal(null, todos);
+    displayTaskModal(null, todoClass);
   });
 
   const all = document.querySelector("#all");
   const today = document.querySelector("#today");
 
-  all.style.setProperty("--all-view", todos.getTodoType("ALL").length);
-  today.style.setProperty("--today-view", todos.getTodoType("TODAY").length);
+  all.style.setProperty("--all-view", todoClass.getTodoType("ALL").length);
+  today.style.setProperty("--today-view", todoClass.getTodoType("TODAY").length);
 
   newTodo.addEventListener("click", () => {
-    all.style.setProperty("--all-view", todos.getTodoType("ALL").length);
-    today.style.setProperty("--today-view", todos.getTodoType("TODAY").length);
+    all.style.setProperty("--all-view", todoClass.getTodoType("ALL").length);
+    today.style.setProperty("--today-view", todoClass.getTodoType("TODAY").length);
   });
 
   all.addEventListener("click", () => {
     todoList.innerHTML = "";
-    for (const todo of todos.getTodoType("ALL")) {
-      displayTodoItem(todo, todos);
+    for (const todo of todoClass.getTodoType("ALL")) {
+      displayTodoItem(todo, todoClass);
     }
   });
 
   today.addEventListener("click", () => {
     todoList.innerHTML = "";
-    for (const todo of todos.getTodoType("TODAY")) {
-      displayTodoItem(todo, todos);
+    for (const todo of todoClass.getTodoType("TODAY")) {
+      displayTodoItem(todo, todoClass);
     }
   });
 })();
