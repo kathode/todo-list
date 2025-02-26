@@ -13,7 +13,7 @@ export const selectOptions = (options, currentSelection) => {
   const optionUI = [];
 
   for (const option of options) {
-    optionUI.push(createElement("option", { ...option, selected: currentSelection === option.value }));
+    optionUI.push(createElement("option", { ...option, selected: currentSelection === option.id }));
   }
 
   return optionUI;
