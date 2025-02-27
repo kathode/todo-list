@@ -74,6 +74,7 @@ export const displayTaskModal = (id, todoClass) => {
     todoItem.remove();
     todoClass.removeItem(todoItemData.id);
 
+    updateProjectCountInDOM(todoClass);
     all.style.setProperty("--all-view", todoClass.getTodoType("ALL").length);
     today.style.setProperty("--today-view", todoClass.getTodoType("TODAY").length);
     modal.close();
@@ -160,7 +161,7 @@ const updateProjectCountInDOM = (todoClass) => {
   const projectList = new LocalStorageService("project");
 
   for (const project of projectList.load()) {
-    const projectCount = document.querySelector(`#project-count-${project.id}`);
+    const projectCount = document.querySelector(`#project-${project.id} .project-count`);
     projectCount.innerText = todoClass.getProjectCount(project.id);
   }
 };
