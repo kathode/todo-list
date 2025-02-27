@@ -33,6 +33,7 @@ export class BaseClass {
     if (index !== -1) {
       const removedItem = this.array.splice(index, 1)[0];
       this.storageService.save(this.array);
+      this.idCounter--;
 
       return removedItem;
     }
