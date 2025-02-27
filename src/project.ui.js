@@ -1,13 +1,13 @@
-import { BaseClass } from "./base.logic";
 import { createElement, displayModal } from "./helper";
 import { LocalStorageService } from "./localStorage.service";
+import { Todo } from "./todo.logic";
 
 export const displayProjectItem = (projectItemData, projectClass) => {
-  const baseClass = new BaseClass(new LocalStorageService("todo"));
-  const count = baseClass.getArray().reduce((total, arr) => (arr.project === projectItemData.id ? total + 1 : total), 0);
+  const todo = new Todo(new LocalStorageService("todo"));
+  const count = todo.getProjectCount(projectItemData.id);
 
-  const projectCount = createElement("div", { innerText: count });
-  const projectTitle = createElement("div", { innerText: projectItemData.title });
+  const projectTitle = createElement("div", { innerText: projectItemData.title, className: "project-title" });
+  const projectCount = createElement("div", { innerText: count, className: "project-count" });
   const project = createElement("div", { className: "project-name", id: `project-${projectItemData?.id}` }, projectTitle, projectCount);
 
   project.addEventListener("click", () => {
@@ -60,10 +60,6 @@ export const displayProjectModal = (id, projectClass) => {
     } else {
       projectClass.editItem(newData);
     }
-
-    // updateTodoItemInDOM(newData);
-    // all.style.setProperty("--all-view", projectClass.getTodoType("ALL").length);
-    // today.style.setProperty("--today-view", projectClass.getTodoType("TODAY").length);
     modal.close();
   });
 };
