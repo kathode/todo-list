@@ -87,8 +87,9 @@ export const displayTaskModal = (id, todoClass) => {
     const newData = { ...todoItemData };
     for (const [key, value] of formData.entries()) {
       if (key === "project" || key === "priority") {
-        const selectedId = event.target.querySelector(`#${key} [value=${value}]`).id;
-        newData[key] = Number(selectedId);
+        const select = event.target.querySelector(`select[name=${key}]`);
+        const selectedOption = select.options[select.selectedIndex];
+        newData[key] = Number(selectedOption.id);
       } else newData[key] = value;
     }
 
