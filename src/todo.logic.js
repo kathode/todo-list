@@ -14,4 +14,8 @@ export class Todo extends BaseClass {
         return this.array.filter((todo) => format(new Date(todo.dueDate), "EEE, dd MMM yyy") === format(new Date(), "EEE, dd MMM yyy"));
     }
   }
+
+  getProjectCount(id) {
+    return this.array.reduce((total, arr) => (arr.project === id ? total + 1 : total), 0);
+  }
 }
