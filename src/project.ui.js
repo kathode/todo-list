@@ -59,6 +59,7 @@ export const displayProjectModal = (id, projectClass) => {
       displayProjectItem(newData, projectClass);
     } else {
       projectClass.editItem(newData);
+      updateProjectTitleInDOM(newData);
     }
     modal.close();
   });
@@ -86,4 +87,9 @@ const projectForm = (data, isNew) => {
   const form = createElement("form", { className: "form", id: data.id }, titleFormGroup, ...formButtonChildren);
 
   return { form, closeButton, removeButton };
+};
+
+const updateProjectTitleInDOM = (newData) => {
+  const projectTitle = document.querySelector(`#project-${newData.id} .project-title`);
+  projectTitle.innerText = newData.title;
 };
