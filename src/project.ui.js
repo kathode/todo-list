@@ -19,6 +19,7 @@ export const displayProjectItem = (projectItemData, projectClass) => {
 };
 
 export const displayProjectModal = (id, projectClass) => {
+  const todo = new Todo(new LocalStorageService("todo"));
   const isNew = id === null;
 
   const defaultData = {
@@ -36,12 +37,20 @@ export const displayProjectModal = (id, projectClass) => {
   });
 
   removeButton.addEventListener("click", () => {
-    const todoItem = document.querySelector(`#project-${projectData.id}`);
-    todoItem.remove();
+    const projectItem = document.querySelector(`#project-${projectData.id}`);
+    projectItem.remove();
     projectClass.removeItem(projectData.id);
+    const removedTodoItems = todo.removeItemsByProject(projectData.id);
 
-    // all.style.setProperty("--all-view", projectClass.getTodoType("ALL").length);
-    // today.style.setProperty("--today-view", projectClass.getTodoType("TODAY").length);
+    for (const todoItemData of removedTodoItems) {
+      const todoItem = document.querySelector(`#todo-item-${todoItemData.id}`);
+      todoItem.remove();
+    }
+
+    const all = document.querySelector("#all");
+    const today = document.querySelector("#today");
+    all.style.setProperty("--all-view", todo.getTodoType("ALL").length);
+    today.style.setProperty("--today-view", todo.getTodoType("TODAY").length);
     modal.close();
   });
 
