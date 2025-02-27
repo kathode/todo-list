@@ -18,4 +18,20 @@ export class Todo extends BaseClass {
   getProjectCount(id) {
     return this.array.reduce((total, arr) => (arr.project === id ? total + 1 : total), 0);
   }
+
+  removeItemsByProject(id) {
+    const removedItems = [];
+    this.array = this.array.filter((arr) => {
+      if (arr.project !== id) {
+        return true;
+      } else {
+        removedItems.push(arr);
+        return false;
+      }
+    });
+
+    this.storageService.save(this.array);
+
+    return removedItems;
+  }
 }
