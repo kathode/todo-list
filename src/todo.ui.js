@@ -99,6 +99,7 @@ export const displayTaskModal = (id, todoClass) => {
     }
 
     updateTodoItemInDOM(newData);
+    updateProjectCountInDOM(todoClass);
     all.style.setProperty("--all-view", todoClass.getTodoType("ALL").length);
     today.style.setProperty("--today-view", todoClass.getTodoType("TODAY").length);
     modal.close();
@@ -152,5 +153,14 @@ const updateTodoItemInDOM = (updatedTodo) => {
     todoElement.querySelector(".todo-title").innerText = updatedTodo.title;
     todoElement.querySelector(".todo-due-date").innerText = format(new Date(updatedTodo.dueDate), "EEE, dd MMM yyy");
     todoElement.className = `todo-item ${getPriority(updatedTodo)}`;
+  }
+};
+
+const updateProjectCountInDOM = (todoClass) => {
+  const projectList = new LocalStorageService("project");
+
+  for (const project of projectList.load()) {
+    const projectCount = document.querySelector(`#project-count-${project.id}`);
+    projectCount.innerText = todoClass.getProjectCount(project.id);
   }
 };
