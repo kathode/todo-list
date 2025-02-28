@@ -1,6 +1,7 @@
 import { createElement, displayModal } from "./helper";
 import { LocalStorageService } from "./localStorage.service";
 import { Todo } from "./todo.logic";
+import { displayTodoItem } from "./todo.ui";
 
 export const displayProjectItem = (projectItemData, projectClass) => {
   const todo = new Todo(new LocalStorageService("todo"));
@@ -9,9 +10,30 @@ export const displayProjectItem = (projectItemData, projectClass) => {
   const projectTitle = createElement("div", { innerText: projectItemData.title, className: "project-title" });
   const projectCount = createElement("div", { innerText: count, className: "project-count" });
   const project = createElement("div", { className: "project-name", id: `project-${projectItemData?.id}` }, projectTitle, projectCount);
+  const todoList = document.querySelector(".todo-list");
 
-  project.addEventListener("click", () => {
-    displayProjectModal(projectItemData.id, projectClass);
+  project.addEventListener("click", (event) => {
+    const edit = event.target.className === "project-count";
+    const projectsView = document.querySelector(".projects-view");
+    const all = document.querySelector("#all");
+    const today = document.querySelector("#today");
+
+    if (edit) {
+      displayProjectModal(projectItemData.id, projectClass);
+    } else {
+      for (const proj of projectsView.children) {
+        proj.classList.remove("active");
+      }
+      today.classList.remove("active");
+      all.classList.remove("active");
+      todoList.innerHTML = "";
+
+      for (const todoItem of todo.getTodoType(projectItemData.id)) {
+        displayTodoItem(todoItem, todo);
+      }
+
+      project.classList.add("active");
+    }
   });
 
   const projectList = document.querySelector(".projects-view");

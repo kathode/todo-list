@@ -124,8 +124,11 @@ body {
   padding: 0.25rem 0rem 0.25rem 2.5rem;
 }
 
+.default-views.active,
 .default-views:hover:not(.default-views.headers),
-.projects-view > :hover {
+.projects-view > :hover,
+.default-views:hover:not(.default-views.headers),
+.projects-view > .active {
   cursor: pointer;
   background: rgb(238, 237, 237);
   border-radius: 0.25rem;
@@ -157,6 +160,18 @@ body {
   background-position: center;
 }
 
+.project-name:hover::after {
+  content: "";
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imx1Y2lkZSBsdWNpZGUtZWxsaXBzaXMiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEiLz48Y2lyY2xlIGN4PSIxOSIgY3k9IjEyIiByPSIxIi8+PGNpcmNsZSBjeD0iNSIgY3k9IjEyIiByPSIxIi8+PC9zdmc+");
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 0;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.25rem;
+}
+
 .project-title {
   width: 10rem;
   white-space: nowrap;
@@ -166,6 +181,11 @@ body {
 
 .project-title::first-letter {
   text-transform: uppercase;
+}
+
+.project-name:hover .project-count {
+  z-index: 2;
+  opacity: 0;
 }
 
 .project-count {
@@ -197,7 +217,8 @@ body {
   background-position: center;
 }
 
-.new-project-button:hover {
+.new-project-button:hover,
+.new-project-button:active {
   cursor: pointer;
   background: rgb(238, 237, 237);
   border-radius: 0.25rem;

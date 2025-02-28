@@ -36,6 +36,7 @@ const todoList = document.querySelector(".todo-list");
 
   const all = document.querySelector("#all");
   const today = document.querySelector("#today");
+  const projectsView = document.querySelector(".projects-view");
 
   all.style.setProperty("--all-view", todoClass.getTodoType("ALL").length);
   today.style.setProperty("--today-view", todoClass.getTodoType("TODAY").length);
@@ -46,6 +47,12 @@ const todoList = document.querySelector(".todo-list");
   });
 
   all.addEventListener("click", () => {
+    all.classList.add("active");
+    today.classList.remove("active");
+    for (const proj of projectsView.children) {
+      proj.classList.remove("active");
+    }
+
     todoList.innerHTML = "";
     for (const todo of todoClass.getTodoType("ALL")) {
       displayTodoItem(todo, todoClass);
@@ -53,6 +60,12 @@ const todoList = document.querySelector(".todo-list");
   });
 
   today.addEventListener("click", () => {
+    today.classList.add("active");
+    all.classList.remove("active");
+    for (const proj of projectsView.children) {
+      proj.classList.remove("active");
+    }
+
     todoList.innerHTML = "";
     for (const todo of todoClass.getTodoType("TODAY")) {
       displayTodoItem(todo, todoClass);
