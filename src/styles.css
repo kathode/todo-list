@@ -2,6 +2,11 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SegWoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+/* Adjust add project button */
+/* clicking on projects should filter to those specific tasks */
+/* todo.ui: changing any data should filter from current view, should remove from current view and update  */
+/* project: hovering on projects should display 3 dot options to modify project name */
+
 *,
 *::after,
 *::before {
@@ -44,21 +49,23 @@ body {
 
 .todo-side-panel {
   background: rgb(227, 220, 220);
-  padding: 3rem 2.6rem;
+  padding: 2.5rem 2.6rem 3rem 2.6rem;
   display: flex;
   flex-direction: column;
-  font-size: 1.25rem;
   font-weight: 200;
   gap: 0.5rem;
 
   border-right: 1px solid rgb(96, 96, 96);
 }
 
-.default-views {
+.default-views:not(.headers) {
   width: 15rem;
   font-weight: 200;
   position: relative;
-  padding: 0.25rem 0rem 0.25rem 0.75rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0rem 0.25rem 2.5rem;
 }
 
 #all::after {
@@ -68,6 +75,17 @@ body {
   right: 0;
   min-width: 2rem;
   text-align: center;
+}
+#all::before {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imx1Y2lkZSBsdWNpZGUtbGlzdCI+PHBhdGggZD0iTTMgMTJoLjAxIi8+PHBhdGggZD0iTTMgMThoLjAxIi8+PHBhdGggZD0iTTMgNmguMDEiLz48cGF0aCBkPSJNOCAxMmgxMyIvPjxwYXRoIGQ9Ik04IDE4aDEzIi8+PHBhdGggZD0iTTggNmgxMyIvPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  left: 0.25rem;
+  top: 0;
+  content: "";
 }
 
 #today::after {
@@ -79,10 +97,23 @@ body {
   text-align: center;
 }
 
+#today::before {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imx1Y2lkZSBsdWNpZGUtY2xvY2siPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+PHBvbHlsaW5lIHBvaW50cz0iMTIgNiAxMiAxMiAxNiAxNCIvPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  left: 0.25rem;
+  top: 0;
+  content: "";
+}
+
 .default-views.headers {
   font-size: 0.75rem;
   font-weight: 400;
   margin-bottom: -0.5rem;
+  padding: 0.25rem 0rem 0.25rem 0.5rem;
 }
 
 .default-views.headers:nth-child(4) {
@@ -91,7 +122,7 @@ body {
 
 .default-views:hover:not(.default-views.headers),
 .projects-view > div {
-  padding: 0.25rem 0rem 0.25rem 0.75rem;
+  padding: 0.25rem 0rem 0.25rem 2.5rem;
 }
 
 .default-views:hover:not(.default-views.headers),
@@ -109,7 +140,26 @@ body {
 .project-name {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+  position: relative;
+  height: 2rem;
+}
+
+.project-name::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imx1Y2lkZSBsdWNpZGUtZm9sZGVyIj48cGF0aCBkPSJNMjAgMjBhMiAyIDAgMCAwIDItMlY4YTIgMiAwIDAgMC0yLTJoLTcuOWEyIDIgMCAwIDEtMS42OS0uOUw5LjYgMy45QTIgMiAwIDAgMCA3LjkzIDNINGEyIDIgMCAwIDAtMiAydjEzYTIgMiAwIDAgMCAyIDJaIi8+PC9zdmc+");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.project-title::first-letter {
+  text-transform: uppercase;
 }
 
 .project-count {
@@ -117,8 +167,37 @@ body {
   text-align: center;
 }
 
-.new-todo-button,
 .new-project-button {
+  padding: 0.25rem 0rem 0.25rem 2.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 200;
+  font-size: 1rem;
+  background-color: rgb(227, 220, 220);
+  border: none;
+  text-align: start;
+  position: relative;
+  height: 2rem;
+}
+
+.new-project-button::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imx1Y2lkZSBsdWNpZGUtcGx1cyI+PHBhdGggZD0iTTUgMTJoMTQiLz48cGF0aCBkPSJNMTIgNXYxNCIvPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.new-project-button:hover {
+  cursor: pointer;
+  background: rgb(238, 237, 237);
+  border-radius: 0.25rem;
+}
+
+.new-todo-button {
   margin-top: 1rem;
   font-size: 1rem;
   display: flex;
@@ -129,8 +208,7 @@ body {
   padding: 0 1rem;
 }
 
-.new-todo-button::before,
-.new-project-button::before {
+.new-todo-button::before {
   content: "+";
   font-size: 2rem;
 }
