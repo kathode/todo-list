@@ -12,6 +12,8 @@ export class Todo extends BaseClass {
         return this.array;
       case "TODAY":
         return this.array.filter((todo) => format(new Date(todo.dueDate), "EEE, dd MMM yyy") === format(new Date(), "EEE, dd MMM yyy"));
+      default:
+        return this.array.filter((todo) => todo.project === type);
     }
   }
 
