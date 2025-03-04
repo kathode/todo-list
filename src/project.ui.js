@@ -3,6 +3,10 @@ import { LocalStorageService } from "./localStorage.service";
 import { Todo } from "./todo.logic";
 import { displayTodoItem } from "./todo.ui";
 
+// Add titles to project, todo modals
+// Fix modal button styles
+// Fix reassigning projects not being updated in DOM
+
 export const displayProjectItem = (projectItemData, projectClass) => {
   const todo = new Todo(new LocalStorageService("todo"));
   const count = todo.getProjectCount(projectItemData.id);
