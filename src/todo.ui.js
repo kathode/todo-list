@@ -113,6 +113,8 @@ const taskForm = (data, isNew) => {
   const projectList = new LocalStorageService("project");
   const projectListParsed = projectList.load().map((p) => ({id:p.id, value: p.title, innerText: p.title }));
   const getProjectName = projectListParsed.find(p => p.id === data.project).value
+  const modalTitle = createElement("h5", { innerText:isNew? "Add Todo": "Edit Todo"});
+  modalTitle.style.margin = "0 0 1rem 0";
 
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", { type: "text", id: "title", name: "title", required: true, value: data?.title ?? "" });
@@ -142,7 +144,7 @@ const taskForm = (data, isNew) => {
   if (isNew) formButtonChildren = formButtonChildren.filter((child) => child.innerText !== "delete");
 
   const formButtons = createElement("div", {}, ...formButtonChildren);
-  const formChildren = [titleFormGroup, descriptionFormGroup, dueDateFormGroup, priorityFormGroup, projectFormGroup, formButtons];
+  const formChildren = [modalTitle, titleFormGroup, descriptionFormGroup, dueDateFormGroup, priorityFormGroup, projectFormGroup, formButtons];
   const form = createElement("form", { className: "form", id: data.id }, ...formChildren);
 
   return { form, closeButton, removeButton };

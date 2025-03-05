@@ -101,6 +101,7 @@ export const displayProjectModal = (id, projectClass) => {
 };
 
 const projectForm = (data, isNew) => {
+  const modalTitle = createElement("h5", { innerText: "Add Project" });
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", {
     type: "text",
@@ -111,15 +112,15 @@ const projectForm = (data, isNew) => {
     disabled: data.id === 1,
   });
   const titleFormGroup = createElement("form-group", {}, titleLabel, titleInput);
-
   const removeButton = createElement("button", { innerText: "delete", type: "button" });
   const closeButton = createElement("button", { innerText: "close", type: "button" });
   const saveButton = createElement("button", { innerText: "save", type: "submit" });
+  modalTitle.style.margin = "0 0 1rem 0";
 
   let formButtonChildren = [removeButton, closeButton, saveButton];
   if (isNew || data.id === 1) formButtonChildren = formButtonChildren.filter((child) => child.innerText !== "delete");
 
-  const form = createElement("form", { className: "form", id: data.id }, titleFormGroup, ...formButtonChildren);
+  const form = createElement("form", { className: "form", id: data.id }, modalTitle, titleFormGroup, ...formButtonChildren);
 
   return { form, closeButton, removeButton };
 };
