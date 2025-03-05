@@ -47,6 +47,7 @@ const todoList = document.querySelector(".todo-list");
   });
 
   all.addEventListener("click", () => {
+    const todoClass = new Todo(new LocalStorageService("todo"));
     all.classList.add("active");
     today.classList.remove("active");
     for (const proj of projectsView.children) {
@@ -60,6 +61,7 @@ const todoList = document.querySelector(".todo-list");
   });
 
   today.addEventListener("click", () => {
+    const todoClass = new Todo(new LocalStorageService("todo"));
     today.classList.add("active");
     all.classList.remove("active");
     for (const proj of projectsView.children) {
