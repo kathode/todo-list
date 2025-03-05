@@ -83,6 +83,19 @@ export const displayTaskModal = (id, todoClass) => {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+    const find = document.querySelector(".active");
+    const todoList = document.querySelector(".todo-list");
+    let todoType = "";
+
+    if (find.id.includes("project")) {
+      todoType = Number(find.id.replace("project-", ""));
+    }
+    if (find.id.includes("all")) {
+      todoType = "ALL";
+    }
+    if (find.id.includes("today")) {
+      todoType = "TODAY";
+    }
 
     const newData = { ...todoItemData };
     for (const [key, value] of formData.entries()) {
@@ -98,6 +111,11 @@ export const displayTaskModal = (id, todoClass) => {
       displayTodoItem(newData, todoClass);
     } else {
       todoClass.editItem(newData);
+
+      todoList.innerHTML = "";
+      for (const todo of todoClass.getTodoType(todoType)) {
+        displayTodoItem(todo, todoClass);
+      }
     }
 
     updateTodoItemInDOM(newData);
