@@ -324,13 +324,13 @@ form-group {
   margin-bottom: 0.5rem;
 }
 
-form > div {
+form > .form-buttons {
   justify-content: end;
   display: flex;
   gap: 0.25rem;
   margin-top: 1rem;
 }
 
-form > div > button::first-letter {
+form > .form-buttons > button::first-letter {
   text-transform: uppercase;
 }

@@ -3,8 +3,6 @@ import { LocalStorageService } from "./localStorage.service";
 import { Todo } from "./todo.logic";
 import { displayTodoItem } from "./todo.ui";
 
-// Fix modal button styles
-
 export const displayProjectItem = (projectItemData, projectClass) => {
   const todo = new Todo(new LocalStorageService("todo"));
   const count = todo.getProjectCount(projectItemData.id);
@@ -119,7 +117,9 @@ const projectForm = (data, isNew) => {
   let formButtonChildren = [removeButton, closeButton, saveButton];
   if (isNew || data.id === 1) formButtonChildren = formButtonChildren.filter((child) => child.innerText !== "delete");
 
-  const form = createElement("form", { className: "form", id: data.id }, modalTitle, titleFormGroup, ...formButtonChildren);
+  const formButtons = createElement("div", { className: "form-buttons" }, ...formButtonChildren);
+
+  const form = createElement("form", { className: "form", id: data.id }, modalTitle, titleFormGroup, formButtons);
 
   return { form, closeButton, removeButton };
 };

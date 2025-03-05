@@ -161,7 +161,7 @@ const taskForm = (data, isNew) => {
   let formButtonChildren = [removeButton, closeButton, saveButton];
   if (isNew) formButtonChildren = formButtonChildren.filter((child) => child.innerText !== "delete");
 
-  const formButtons = createElement("div", {}, ...formButtonChildren);
+  const formButtons = createElement("div", {className:'form-buttons'}, ...formButtonChildren);
   const formChildren = [modalTitle, titleFormGroup, descriptionFormGroup, dueDateFormGroup, priorityFormGroup, projectFormGroup, formButtons];
   const form = createElement("form", { className: "form", id: data.id }, ...formChildren);
 
