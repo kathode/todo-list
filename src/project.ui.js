@@ -3,9 +3,7 @@ import { LocalStorageService } from "./localStorage.service";
 import { Todo } from "./todo.logic";
 import { displayTodoItem } from "./todo.ui";
 
-// Add titles to project, todo modals
 // Fix modal button styles
-// Fix reassigning projects not being updated in DOM
 
 export const displayProjectItem = (projectItemData, projectClass) => {
   const todo = new Todo(new LocalStorageService("todo"));
@@ -17,6 +15,7 @@ export const displayProjectItem = (projectItemData, projectClass) => {
   const todoList = document.querySelector(".todo-list");
 
   project.addEventListener("click", (event) => {
+    const todo = new Todo(new LocalStorageService("todo"));
     const edit = event.target.className === "project-count";
     const projectsView = document.querySelector(".projects-view");
     const all = document.querySelector("#all");
@@ -101,7 +100,7 @@ export const displayProjectModal = (id, projectClass) => {
 };
 
 const projectForm = (data, isNew) => {
-  const modalTitle = createElement("h5", { innerText: "Add Project" });
+  const modalTitle = createElement("h5", { innerText: isNew ? "Add Project" : "Edit Project" });
   const titleLabel = createElement("label", { innerText: "Title", for: "title" });
   const titleInput = createElement("input", {
     type: "text",
